@@ -55,10 +55,22 @@ var Board = React.createClass({
     }
 
     let cell = this.state.gameGrid[x][y];
-    if (false) { // Check for shift key magic
-      Actions.toggleFlag(x, y);
-    } else if (!cell.isFlagged) {
+    if (!cell.isFlagged) {
       Actions.sweepLocation(x, y);
+    }
+  },
+
+  handleLongPressLocation(x, y) {
+    if (this.state.gameOver) {
+      return;
+    }
+    if (this.state.gameTimer === 0) {
+      Actions.startTimer();
+    }
+
+    let cell = this.state.gameGrid[x][y];
+    if (!cell.isSwept) {
+      Actions.toggleFlag(x, y);
     }
   },
 
@@ -105,6 +117,7 @@ var Board = React.createClass({
           isSwept={this.state.gameOver || gameGrid[rowIndex][x].isSwept}
           isFlagged={gameGrid[rowIndex][x].isFlagged}
           clickHandler={(e) => this.handleClickLocation(rowIndex, x, e)}
+          longPressHandler={(e) => this.handleLongPressLocation(rowIndex, x, e)}
           key={'cell_' + x}
         >
           <Text>{cellContents}</Text>

@@ -19,7 +19,7 @@ let store = Reflux.createStore({
       height: this.height,
       width: this.width,
       numMines: this.numMines,
-      numRemainingFlags: this.numMines,
+      numRemainingFlags: '?',
       gameTimer: this.gameTimer
     };
   },
@@ -42,13 +42,15 @@ let store = Reflux.createStore({
   },
 
   onStartGame(width, height, numMines) {
-    // this.height = height;
-    // this.width = width;
-    // this.numMines = numMines;
+    this.height = height;
+    this.width = width;
+    this.numMines = numMines;
+
     this.gameStarted = true;
     this.gameTimer = 0;
 
     this.makeGameGrid();
+    this.setNumberRemainingFlags();
     this.updateState();
   },
 
@@ -77,14 +79,15 @@ let store = Reflux.createStore({
 
     if (minesToAdd > numFreeSpaces) {
       minesToAdd = numFreeSpaces;
+      this.numMines = minesToAdd;
     }
 
     while (minesToAdd) {
-      let x = this.getRandomNumber(0, this.width)
-      let y = this.getRandomNumber(0, this.height);
+      let width = this.getRandomNumber(0, this.width)
+      let height = this.getRandomNumber(0, this.height);
 
-      if (!grid[x][y].hasMine) {
-        grid[x][y].hasMine = true;
+      if (!grid[height][width].hasMine) {
+        grid[height][width].hasMine = true;
         minesToAdd--;
       }
     }

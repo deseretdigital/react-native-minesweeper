@@ -37,6 +37,8 @@ var Cell = React.createClass({
       <TouchableHighlight
         style={cellStyle}
         onPress={this.props.clickHandler.bind(null)}
+        onLongPress={this.props.longPressHandler.bind(null)}
+        delayLongPress={25}
       >
         <Text>{content}</Text>
       </TouchableHighlight>
